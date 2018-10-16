@@ -6,17 +6,18 @@ import cuid from "cuid";
 
 class EventDashboard extends Component {
   state = {
+    selectedEvent: null,
     isOpen: false,
     events: [
       {
         id: "1",
-        title: "Trip to Tower of London",
-        date: "2018-03-27T11:00:00+00:00",
+        title: "HTOWN SAUCE",
+        date: "2018-10-27",
         category: "culture",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
-        city: "London, UK",
-        venue: "Tower of London, St Katharine's & Wapping, London",
+        city: "Houston, Tx",
+        venue: "Hermann Park",
         hostedBy: "Alena",
         hostPhotoURL: "https://randomuser.me/api/portraits/women/42.jpg",
         attendees: [
@@ -27,21 +28,21 @@ class EventDashboard extends Component {
           },
           {
             id: "b",
-            name: "Tom",
+            name: "Chad",
             photoURL: "https://randomuser.me/api/portraits/men/22.jpg"
           }
         ]
       },
       {
         id: "2",
-        title: "Trip to Punch and Judy Pub",
-        date: "2018-03-28T14:00:00+00:00",
+        title: "Let's Get Drinks",
+        date: "2018-10-28",
         category: "drinks",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
-        city: "London, UK",
-        venue: "Punch & Judy, Henrietta Street, London, UK",
-        hostedBy: "Tom",
+        city: "Houston, Tx",
+        venue: "Little Dipper Bar",
+        hostedBy: "Chad",
         hostPhotoURL: "https://randomuser.me/api/portraits/men/22.jpg",
         attendees: [
           {
@@ -60,7 +61,10 @@ class EventDashboard extends Component {
   };
 
   handleFormOpen = () => {
-    this.setState({ isOpen: true });
+    this.setState({
+      selectedEvent: null,
+      isOpen: true
+    });
   };
 
   handleCancel = () => {
@@ -76,13 +80,47 @@ class EventDashboard extends Component {
     this.setState({ events: updatedEvents, isOpen: false });
   };
 
+  handleDeleteEvent = eventId => () => {
+    const updatedEvents = this.state.events.filter(
+      event => event.id !== eventId
+    );
+    this.setState({
+      events: updatedEvents
+    });
+  };
+
+  handleOpenEvent = eventToOpen => () => {
+    this.setState({
+      selectedEvent: eventToOpen,
+      isOpen: true
+    });
+  };
+
+  handleUpdateEvent = updatedEvent => {
+    this.setState({
+      events: this.state.events.map(event => {
+        if (event.id === updatedEvent.id) {
+          return Object.assign({}, updatedEvent);
+        } else {
+          return event;
+        }
+      }),
+      isOpen: false,
+      selectedEvent: null
+    });
+  };
+
   render() {
-    const { events, isOpen } = this.state;
+    const { events, isOpen, selectedEvent } = this.state;
 
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventList events={events} />
+          <EventList
+            handleDeleteEvent={this.handleDeleteEvent}
+            handleOpenEvent={this.handleOpenEvent}
+            events={events}
+          />
         </Grid.Column>
         <Grid.Column width={6}>
           <Button
@@ -92,6 +130,8 @@ class EventDashboard extends Component {
           />
           {isOpen ? (
             <EventForm
+              handleUpdateEvent={this.handleUpdateEvent}
+              selectedEvent={selectedEvent}
               handleCreateEvent={this.handleCreateEvent}
               handleCancel={this.handleCancel}
             />
