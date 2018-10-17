@@ -9,6 +9,7 @@ import EventDetailedPage from "../../features/event/EventDetailed/EventDetailedP
 import HomePage from "../../features/home/HomePage";
 import { Container } from "semantic-ui-react";
 import { Route, Switch } from "react-router-dom";
+import TestComponent from "../../features/testArea/TestComponent";
 
 class App extends Component {
   render() {
@@ -25,6 +26,7 @@ class App extends Component {
               <Container className="main">
                 <Switch>
                   <Route path="/events" component={EventDashboard} />
+                  <Route path="/test" component={TestComponent} />
                   <Route path="/event/:id" component={EventDetailedPage} />
                   <Route path="/people" component={PeopleDashboard} />
                   <Route path="/profile/:id" component={UserDetailedPage} />
