@@ -1,63 +1,25 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Grid, Button } from "semantic-ui-react";
 import EventList from "../EventList/EventList";
 import EventForm from "../EventForm/EventForm";
 import cuid from "cuid";
+import { createEvent, deleteEvent, updateEvent } from "../eventActions";
+
+const mapState = state => ({
+  events: state.events
+});
+
+const actions = {
+  createEvent,
+  deleteEvent,
+  updateEvent
+};
 
 class EventDashboard extends Component {
   state = {
     selectedEvent: null,
-    isOpen: false,
-    events: [
-      {
-        id: "1",
-        title: "HTOWN SAUCE",
-        date: "2018-10-27",
-        category: "culture",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
-        city: "Houston, Tx",
-        venue: "Hermann Park",
-        hostedBy: "Alena",
-        hostPhotoURL: "https://randomuser.me/api/portraits/women/42.jpg",
-        attendees: [
-          {
-            id: "a",
-            name: "Bob",
-            photoURL: "https://randomuser.me/api/portraits/men/20.jpg"
-          },
-          {
-            id: "b",
-            name: "Chad",
-            photoURL: "https://randomuser.me/api/portraits/men/22.jpg"
-          }
-        ]
-      },
-      {
-        id: "2",
-        title: "Let's Get Drinks",
-        date: "2018-10-28",
-        category: "drinks",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
-        city: "Houston, Tx",
-        venue: "Little Dipper Bar",
-        hostedBy: "Chad",
-        hostPhotoURL: "https://randomuser.me/api/portraits/men/22.jpg",
-        attendees: [
-          {
-            id: "b",
-            name: "Tom",
-            photoURL: "https://randomuser.me/api/portraits/men/22.jpg"
-          },
-          {
-            id: "a",
-            name: "Bob",
-            photoURL: "https://randomuser.me/api/portraits/women/20.jpg"
-          }
-        ]
-      }
-    ]
+    isOpen: false
   };
 
   handleFormOpen = () => {
@@ -75,18 +37,13 @@ class EventDashboard extends Component {
     newEvent.id = cuid();
     newEvent.hostPhotoURL = "/assets/user.png";
 
-    const updatedEvents = [...this.state.events, newEvent];
+    this.props.createEvent(newEvent);
 
-    this.setState({ events: updatedEvents, isOpen: false });
+    this.setState({ isOpen: false });
   };
 
   handleDeleteEvent = eventId => () => {
-    const updatedEvents = this.state.events.filter(
-      event => event.id !== eventId
-    );
-    this.setState({
-      events: updatedEvents
-    });
+    this.props.deleteEvent(eventId);
   };
 
   handleOpenEvent = eventToOpen => () => {
@@ -97,21 +54,16 @@ class EventDashboard extends Component {
   };
 
   handleUpdateEvent = updatedEvent => {
+    this.props.updateEvent(updatedEvent);
     this.setState({
-      events: this.state.events.map(event => {
-        if (event.id === updatedEvent.id) {
-          return Object.assign({}, updatedEvent);
-        } else {
-          return event;
-        }
-      }),
       isOpen: false,
       selectedEvent: null
     });
   };
 
   render() {
-    const { events, isOpen, selectedEvent } = this.state;
+    const { isOpen, selectedEvent } = this.state;
+    const { events } = this.props;
 
     return (
       <Grid>
@@ -142,4 +94,7 @@ class EventDashboard extends Component {
   }
 }
 
-export default EventDashboard;
+export default connect(
+  mapState,
+  actions
+)(EventDashboard);
