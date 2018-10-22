@@ -3,6 +3,12 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
 import { createEvent, updateEvent } from "../eventActions";
+import {
+  composeValidators,
+  combineValidators,
+  isRequired,
+  hasLengthGreaterThan
+} from "revalidate";
 import TextInput from "../../../app/common/form/TextInput";
 import TextArea from "../../../app/common/form/TextArea";
 import SelectInput from "../../../app/common/form/SelectInput";
@@ -36,6 +42,20 @@ const category = [
   { key: "travel", text: "Travel", value: "travel" }
 ];
 
+const validate = combineValidators({
+  title: isRequired({ message: "The event title is required" }),
+  category: isRequired({ message: "Please provide a category" }),
+  description: composeValidators(
+    isRequired({ message: "Please enter a description" }),
+    hasLengthGreaterThan(9)({
+      message: "Description needs to be at least 10 characters"
+    })
+  )(),
+  city: isRequired("City"),
+  venue: isRequired("Venue"),
+  date: isRequired("Date")
+});
+
 class EventForm extends Component {
   onFormSubmit = values => {
     if (this.props.initialValues.id) {
@@ -58,6 +78,8 @@ class EventForm extends Component {
   };
 
   render() {
+    const { invalid, submitting, pristine } = this.props;
+
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -103,7 +125,11 @@ class EventForm extends Component {
                 component={TextInput}
                 placeholder="Event Date"
               />
-              <Button positive type="submit">
+              <Button
+                disabled={invalid || submitting || pristine}
+                positive
+                type="submit"
+              >
                 Submit
               </Button>
               <Button onClick={this.redirectToEvents} type="button">
@@ -120,4 +146,8 @@ class EventForm extends Component {
 export default connect(
   mapState,
   actions
-)(reduxForm({ form: "eventForm", enableReinitialize: true })(EventForm));
+)(
+  reduxForm({ form: "eventForm", enableReinitialize: true, validate })(
+    EventForm
+  )
+);
