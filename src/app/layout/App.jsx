@@ -10,11 +10,13 @@ import HomePage from "../../features/home/HomePage";
 import { Container } from "semantic-ui-react";
 import { Route, Switch } from "react-router-dom";
 import TestComponent from "../../features/testArea/TestComponent";
+import ModalManager from "../../features/modals/ModalManager";
 
 class App extends Component {
   render() {
     return (
       <div>
+        <ModalManager />
         <Switch>
           <Route exact path="/" component={HomePage} />
         </Switch>
