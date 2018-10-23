@@ -12,7 +12,10 @@ import {
 import TextInput from "../../../app/common/form/TextInput";
 import TextArea from "../../../app/common/form/TextArea";
 import SelectInput from "../../../app/common/form/SelectInput";
+import DateInput from "../../../app/common/form/DateInput";
+import PlaceInput from "../../../app/common/form/PlaceInput";
 import cuid from "cuid";
+import moment from "moment";
 
 const mapState = (state, ownProps) => {
   const eventId = ownProps.match.params.id;
@@ -58,6 +61,7 @@ const validate = combineValidators({
 
 class EventForm extends Component {
   onFormSubmit = values => {
+    values.date = moment(values.date).format();
     if (this.props.initialValues.id) {
       this.props.updateEvent(values);
       this.props.history.goBack();
@@ -110,20 +114,25 @@ class EventForm extends Component {
               <Field
                 name="city"
                 type="text"
-                component={TextInput}
+                component={PlaceInput}
+                opitons={{ types: ["(cities"] }}
                 placeholder="Event City"
               />
               <Field
                 name="venue"
                 type="text"
-                component={TextInput}
+                component={PlaceInput}
+                opitons={{ types: ["establishment"] }}
                 placeholder="Event Venue"
               />
               <Field
                 name="date"
                 type="text"
-                component={TextInput}
-                placeholder="Event Date"
+                component={DateInput}
+                dateFormat="YYYY-MM-DD HH:mm"
+                timeFormat="HH:mm"
+                showTimeSelect
+                placeholder="Date and Time of event"
               />
               <Button
                 disabled={invalid || submitting || pristine}

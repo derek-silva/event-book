@@ -9,7 +9,7 @@ function TextArea({
   meta: { touched, error }
 }) {
   return (
-    <Form.Field eror={touched && !!error}>
+    <Form.Field error={touched && !!error}>
       <textarea {...input} placeholder={placeholder} rows={rows} />
       {touched &&
         error && (
