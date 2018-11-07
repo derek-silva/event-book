@@ -10,7 +10,7 @@ class LoginModal extends Component {
   render() {
     return (
       <Modal size="mini" open={true} onClose={this.props.closeModal}>
-        <Modal.Header>Login to Event Book!</Modal.Header>
+        <Modal.Header>Login to RSVP!</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <LoginForm />

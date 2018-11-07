@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import { firestoreConnect } from "react-redux-firebase";
 import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedInfo from "./EventDetailedInfo";
@@ -8,11 +9,12 @@ import EventDetailedSidebar from "./EventDetailedSidebar";
 
 const mapState = (state, ownProps) => {
   const eventId = ownProps.match.params.id;
-
   let event = {};
 
-  if (eventId && state.events.length > 0) {
-    event = state.events.filter(event => event.id === eventId)[0];
+  if (eventId && state.firestore.ordered.events) {
+    event = state.firestore.ordered.events.filter(
+      event => eventId === event.id
+    )[0];
   }
 
   return {
@@ -35,4 +37,6 @@ function EventDetailedPage({ event }) {
   );
 }
 
-export default connect(mapState)(EventDetailedPage);
+export default connect(mapState)(
+  firestoreConnect([{ collection: "events" }])(EventDetailedPage)
+);

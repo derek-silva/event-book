@@ -12,7 +12,7 @@ function EventDetailedSidebar({ attendees }) {
         attached="top"
         secondary
         inverted
-        color="teal"
+        color="violet"
       >
         {attendees && attendees.length}{" "}
         {attendees && attendees.length === 1 ? "Person" : "People"} Going
