@@ -7,15 +7,16 @@ class EventList extends Component {
 
     return (
       <div>
-        {events.map(event => {
-          return (
-            <EventListItem
-              handleDeleteEvent={handleDeleteEvent}
-              key={event.id}
-              event={event}
-            />
-          );
-        })}
+        {events &&
+          events.map(event => {
+            return (
+              <EventListItem
+                handleDeleteEvent={handleDeleteEvent}
+                key={event.id}
+                event={event}
+              />
+            );
+          })}
       </div>
     );
   }

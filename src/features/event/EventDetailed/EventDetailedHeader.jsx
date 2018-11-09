@@ -45,7 +45,7 @@ function EventDetailedHeader({ event }) {
       </Segment>
       <Segment attached="bottom">
         <Button>Cancel My Place</Button>
-        <Button color="teal">JOIN THIS EVENT</Button>
+        <Button color="violet">JOIN THIS EVENT</Button>
         <Button
           as={Link}
           to={`/manage/${event.id}`}

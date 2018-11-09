@@ -11,7 +11,7 @@ function HomePage({ history }) {
               src="/assets/logo.png"
               alt="logo"
             />
-            <div className="content">Event Book</div>
+            <div className="content">RSVP</div>
           </h1>
           <h2>Do whatever you want to do</h2>
           <div

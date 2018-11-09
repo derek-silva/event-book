@@ -12,7 +12,7 @@ function EventDetailedSidebar({ attendees }) {
         attached="top"
         secondary
         inverted
-        color="teal"
+        color="violet"
       >
         {attendees && attendees.length}{" "}
         {attendees && attendees.length === 1 ? "Person" : "People"} Going
@@ -20,7 +20,7 @@ function EventDetailedSidebar({ attendees }) {
       <Segment attached>
         <List relaxed divided>
           {attendees &&
-            attendees.map(attendee => (
+            Object.values(attendees).map(attendee => (
               <Item key={attendee.id} style={{ position: "relative" }}>
                 {isHost && (
                   <Label

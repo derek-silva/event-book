@@ -8,7 +8,7 @@ function EventDetailedChat() {
         textAlign="center"
         attached="top"
         inverted
-        color="teal"
+        color="violet"
         style={{ border: "none" }}
       >
         <Header>Chat about this event</Header>
@@ -83,7 +83,7 @@ function EventDetailedChat() {
               content="Add Reply"
               labelPosition="left"
               icon="edit"
-              primary
+              color="violet"
             />
           </Form>
         </Comment.Group>
